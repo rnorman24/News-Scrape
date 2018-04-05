@@ -16,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/rnorman24/News-Scrape/issues"
   },
-  "homepage": "https://github.com/rnorman24/News-Scrape#readme"
+  "homepage": "https://github.com/rnorman24/News-Scrape#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.13",
+    "morgan": "^1.9.0"
+  }
 }
