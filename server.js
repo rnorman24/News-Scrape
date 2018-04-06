@@ -12,7 +12,8 @@ const cheerio = require("cheerio");
 // Require all models
 const db = require("./models");
 
-const PORT = process.env.PORT || 3000;
+// process.env.PORT || 
+const PORT = 3000;
 
 // Initialize Express
 const app = express();
@@ -47,13 +48,12 @@ app.get("/scrape", function(req, res) {
       // Save an empty result object
       const result = {};
 
-      // Add the text and href of every link, and save them as properties of the result object
+      // Add the title and summary of every article, and save them as properties of the result object
       result.title = $(this)
-        .children("a")
-        .text();
-      result.link = $(this)
-        .children("a")
-        .attr("href");
+        .find("h2")
+        .find("a").text().trim();
+      result.summary = $(this)
+        .find("p.summary").text().trim();
 
       // Create a new Article using the `result` object built from scraping
       db.Article

@@ -15,7 +15,7 @@ $(document).on("click", "#articles-btn", function() {
       });
     })
 })
-
+/*
 // Grab the articles as a json
 $.getJSON("/articles", function(data) {
   // For each one
@@ -24,7 +24,7 @@ $.getJSON("/articles", function(data) {
     $("#articles").append("<p data-id='" + article._id + "'>" + article.title + "<br />" + article.link + "</p>");
   }
 });
-
+*/
 // Whenever someone clicks a p tag
 $(document).on("click", "p", function() {
   // Empty the notes from the note section
