@@ -30,9 +30,7 @@ app.use(express.static("public"));
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/newsArticles", {
-  useMongoClient: true
-});
+mongoose.connect("mongodb://localhost/newsArticles");
 
 // Routes
 
@@ -42,31 +40,40 @@ app.get("/scrape", function(req, res) {
   axios.get("https://www.nytimes.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
-
+const newArticles = [];
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article.theme-summary").each(function(i, element) {
+    $("div.first-column-region div.collection article.theme-summary").each(function(i, element) {
       // Save an empty result object
       const result = {};
-
+      console.log(this);
       // Add the title and summary of every article, and save them as properties of the result object
       result.title = $(this)
-        .find("h2")
-        .find("a").text().trim();
+        .children("h2")
+        .children("a").text();
       result.summary = $(this)
-        .find("p.summary").text().trim();
-
+        .children("p.summary")        
+        .text().trim();
+      if (result.summary === "") {
+        result.summary = $(this)
+          .children("ul")
+          .children("li")
+          .text();
+      }
       // Create a new Article using the `result` object built from scraping
       db.Article
         .create(result)
         .then(function(dbArticle) {
           // If we were able to successfully scrape and save an Article, send a message to the client
-          res.send("Scrape Complete");
+          // res.json(dbArticle);
+          newqArticles.push(dbArticle);
+          console.log("Scrape Complete");
         })
         .catch(function(err) {
           // If an error occurred, send it to the client
           res.json(err);
         });
     });
+    res.json(newArticles);
   });
 });
 

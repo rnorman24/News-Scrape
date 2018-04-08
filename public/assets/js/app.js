@@ -1,4 +1,5 @@
 $(document).on("click", "#articles-btn", function() {
+  event.preventDefault();
   // Make a call for the articles
   $.ajax({
     method: "GET",
@@ -7,10 +8,11 @@ $(document).on("click", "#articles-btn", function() {
     // With that done, add articles to page
     .done(function() {
       $.getJSON("/articles", function(data) {
+        console.log(data);
         // For each one
         for (let article of data) {
           // Display the apropos information on the page
-          $("#articles").append("<p data-id='" + article._id + "'>" + article.title + "<br />" + article.link + "</p>");
+          $("#articles").append("<p data-id='" + article._id + "'>" + article.title + "<br />" + article.summary + "</p>");
         }
       });
     })
