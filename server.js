@@ -40,7 +40,7 @@ app.get("/scrape", function(req, res) {
   axios.get("https://www.nytimes.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
-const newArticles = [];
+    const newArticles = [];
     // Now, we grab every h2 within an article tag, and do the following:
     $("div.first-column-region div.collection article.theme-summary").each(function(i, element) {
       // Save an empty result object
@@ -65,7 +65,7 @@ const newArticles = [];
         .then(function(dbArticle) {
           // If we were able to successfully scrape and save an Article, send a message to the client
           // res.json(dbArticle);
-          newqArticles.push(dbArticle);
+          newArticles.push(dbArticle);
           console.log("Scrape Complete");
         })
         .catch(function(err) {

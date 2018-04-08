@@ -9,8 +9,13 @@ $(document).on("click", "#articles-btn", function() {
     .done(function() {
       $.getJSON("/articles", function(data) {
         console.log(data);
+        $("#articles").empty();
         // For each one
         for (let article of data) {
+          
+          const articleDiv = $("<div class='item card border-info'>");
+
+
           // Display the apropos information on the page
           $("#articles").append("<p data-id='" + article._id + "'>" + article.title + "<br />" + article.summary + "</p>");
         }
