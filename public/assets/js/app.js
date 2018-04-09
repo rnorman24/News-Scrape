@@ -1,3 +1,5 @@
+initPage();
+
 $(document).on("click", "#articles-btn", function() {
   event.preventDefault();
   // Make a call for the articles
@@ -9,19 +11,33 @@ $(document).on("click", "#articles-btn", function() {
     .done(function() {
       $.getJSON("/articles", function(data) {
         console.log(data);
-        $("#articles").empty();
+        let articleCards = [];
         // For each one
         for (let article of data) {
-          
-          const articleDiv = $("<div class='item card border-info'>");
 
-
-          // Display the apropos information on the page
-          $("#articles").append("<p data-id='" + article._id + "'>" + article.title + "<br />" + article.summary + "</p>");
+          articleCards.push(createCard(article));          
         }
+       $("#articles").append(articleCards); 
       });
     })
 })
+
+$(document).on("click", "#home-btn", function() {
+  event.preventDefault();
+  // Make a call for the articles
+  $.getJSON("/articles", function(data) {
+    console.log(data);
+    let articleCards = [];
+    // For each one
+    for (let article of data) {
+
+      articleCards.push(createCard(article));          
+    }
+    $("#articles").append(articleCards); 
+  });
+})
+
+
 /*
 // Grab the articles as a json
 $.getJSON("/articles", function(data) {
@@ -94,3 +110,46 @@ $(document).on("click", "#savenote", function() {
   $("#titleinput").val("");
   $("#bodyinput").val("");
 });
+
+function initPage() {
+  // Empty the article container, run an AJAX request for any unsaved headlines
+  $("#articles").empty();
+  $.getJSON("/articles", function(data) {
+    console.log(data);
+    let articleCards = [];
+    // For each one
+    for (let article of data) {
+
+      articleCards.push(createCard(article));          
+    }
+    $("#articles").append(articleCards); 
+  });
+}
+
+function createCard(article) {
+  // This functiont takes in a single JSON object for an article/headline
+  // It constructs a jQuery element containing all of the formatted HTML for the
+  // article panel
+  const card = $(
+    [
+      "<div class='card-header'>",
+      "<h3>",
+      "<a class='card-link' target='_blank' href='" + article.link + "'>",
+      article.title,
+      "</a>",
+      "<a class='btn btn-outline-success save'>",
+      "Save Article",
+      "</a>",
+      "</h3>",
+      "<div class='card-body'>",
+      article.summary,
+      "</div>",
+      "</div>"
+    ].join("")
+  );
+  // We attach the article's id to the jQuery element
+  // We will use this when trying to figure out which article the user wants to save
+  card.data("_id", article._id);
+  // We return the constructed panel jQuery element
+  return card;
+}

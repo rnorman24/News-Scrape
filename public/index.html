@@ -24,10 +24,10 @@
     <a class="navbar-brand" href="#">News Scraper</a>
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" id="home-btn">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Saved Articles <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="#">Saved Articles</a>
       </li>
       <li class="nav-item">
         <a class="btn btn-danger btn-sm nav-link" href="/scrape" role="button" id="articles-btn">SCRAPE NEW ARTICLES!</a>
@@ -41,16 +41,8 @@
     <hr class="my-4">
   </div>
 
-  <div class="card" id="articles">
-    <div class="card-header">
-      <a href="#" class="card-link">Card link</a>
-      <a class="nav nav-pills card-header-pills nav-item nav-link active" href="#">Active</a>
-    </div>
-    <div class="card-body">
-      <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    </div>
-  </div>
-
+  <div class="card" id="articles"></div>
+    
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="./assets/js/app.js"></script>
 </body>
