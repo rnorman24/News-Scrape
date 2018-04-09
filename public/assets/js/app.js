@@ -18,6 +18,11 @@ $(document).on("click", "#home-btn", function() {
   initPage();
 })
 
+$(document).on("click", ".save", function() {
+  event.preventDefault();
+  saveArticle();
+})
+
 // Whenever someone clicks a p tag
 $(document).on("click", "p", function() {
   // Empty the notes from the note section
@@ -84,7 +89,7 @@ $(document).on("click", "#savenote", function() {
 function initPage() {
   // Empty the article container, run an AJAX request for any unsaved headlines
   $("#articles").empty();
-  $.getJSON("/articles", function(data) {
+  $.getJSON("/articles?saved=false", function(data) {
     console.log(data);
     let articleCards = [];
     // For each one
@@ -117,9 +122,30 @@ function createCard(article) {
       "</div>"
     ].join("")
   );
-  // We attach the article's id to the jQuery element
-  // We will use this when trying to figure out which article the user wants to save
+  // The article's id is attached to the jQuery element
+  // This will be used when trying to figure out which article the user wants to save
   card.data("_id", article._id);
-  // We return the constructed panel jQuery element
+  // return the constructed card jQuery element
   return card;
+}
+
+function saveArticle() {
+  // This function is triggered when the user wants to save an article
+  // When we rendered the article initially, we attatched a javascript object containing the headline id
+  // to the element using the .data method. Here we retrieve that.
+  const articleToSave = $(this).parents(".card").data();
+  articleToSave.saved = true;
+  // Using a patch method to be semantic since this is an update to an existing record in our collection
+  $.ajax({
+    method: "PUT",
+    url: "/articles",
+    data: articleToSave
+  }).then(function(data) {
+    // If successful, mongoose will send back an object containing a key of "ok" with the value of 1
+    // (which casts to 'true')
+    if (data.ok) {
+      // Run the initPage function again. This will reload the entire list of articles
+      initPage();
+    }
+  });
 }

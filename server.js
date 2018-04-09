@@ -50,7 +50,7 @@ mongoDb.once('open', function() {
 })
 // Routes
 
-// A GET route for scraping the echojs website
+// A GET route for scraping the nytimes website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
   axios.get("https://www.nytimes.com/").then(function(response) {
