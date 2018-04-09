@@ -103,11 +103,11 @@ function createCard(article) {
   const card = $(
     [
       "<div class='card-header'>",
-      "<h3>",
+      "<h3 class='d-flex'>",
       "<a class='card-link' target='_blank' href='" + article.link + "'>",
       article.title,
       "</a>",
-      "<a class='btn btn-outline-success save'>",
+      "<a class='btn btn-outline-success save ml-auto'>",
       "Save Article",
       "</a>",
       "</h3>",
