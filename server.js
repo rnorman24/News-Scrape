@@ -13,7 +13,7 @@ const cheerio = require("cheerio");
 const db = require("./models");
 
 // process.env.PORT || 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Initialize Express
 const app = express();
@@ -32,12 +32,22 @@ app.use(express.static("public"));
 if (process.env.MONGODB_URI) {
   mongoose.Promise = Promise;
   mongoose.connect(process.env.MONGODB_URI);
+  console.log('mongodb heroku connection');
 } else {
   mongoose.Promise = Promise;
   mongoose.connect("mongodb://localhost/newsArticles");
+  console.log('mongodb localhost connection');
 }
 
+const mongoDb = mongoose.connection;
 
+mongoDb.on('error', function(err) {
+  console.log('Mongoose Error: ', err);
+});
+
+mongoDb.once('open', function() {
+  console.log('Mongoose connection successful.');
+})
 // Routes
 
 // A GET route for scraping the echojs website
