@@ -9,18 +9,28 @@ const ArticleSchema = new Schema({
   // `title` is required and of type String
   title: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   // `link` is required and of type String
   summary: {
     type: String,
     required: false
   },
+  date: String,
   saved: {
     type: Boolean,
     default: false
-  },
-  // `link` is required and of type String
+  }
+});
+
+// This creates our model from the above schema, using mongoose's model method
+const Article = mongoose.model("Article", ArticleSchema);
+
+// Export the Article model
+module.exports = Article;
+
+  /*// `link` is required and of type String
   link: {
     type: String,
     required: true
@@ -33,9 +43,4 @@ const ArticleSchema = new Schema({
     ref: "Note"
   }
 });
-
-// This creates our model from the above schema, using mongoose's model method
-const Article = mongoose.model("Article", ArticleSchema);
-
-// Export the Article model
-module.exports = Article;
+*/

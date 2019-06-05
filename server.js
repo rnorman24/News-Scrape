@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const expressHandlebars = require('express-handlebars');
 
 // Our scraping tools
 // Axios is a promised-based http library, similar to jQuery's Ajax method
@@ -19,6 +20,16 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 // Configure middleware
+// Set up an Express Router
+const router = express.Router();
+
+// Require our routes file pass the router object
+require('./config/routes')(router);
+
+// Connect Handlebars to the Express app
+
+
+// Have every request go through the router middleware
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
@@ -56,12 +67,11 @@ app.get("/scrape", function(req, res) {
   axios.get("https://www.nytimes.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
-    const newArticles = [];
+    
     // Now, we grab every h2 within an article tag, and do the following:
     $("div.first-column-region div.collection article.theme-summary").each(function(i, element) {
       // Save an empty result object
       const result = {};
-      console.log(this);
       // Add the title and summary of every article, and save them as properties of the result object
       result.title = $(this)
         .children("h2")
@@ -84,15 +94,15 @@ app.get("/scrape", function(req, res) {
         .then(function(dbArticle) {
           // If we were able to successfully scrape and save an Article, send a message to the client
           // res.json(dbArticle);
-          newArticles.push(dbArticle);
-          console.log("Scrape Complete");
+          
+          
         })
         .catch(function(err) {
           // If an error occurred, send it to the client
           res.json(err);
         });
     });
-    res.json(newArticles);
+    
   });
 });
 
@@ -104,6 +114,10 @@ app.get("/articles", function(req, res) {
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
       res.json(dbArticle);
+      let currentArticle = [];
+      currentArticle.push(dbArticle);
+      let titles = currentArticle.map(title => title.title);
+      console.log("This is currentArticle: ", currentArticle);
     })
     .catch(function(err) {
       // If an error occurred, send it to the client

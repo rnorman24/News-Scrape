@@ -94,7 +94,6 @@ function initPage() {
     let articleCards = [];
     // For each one
     for (let article of data) {
-
       articleCards.push(createCard(article));          
     }
     $("#articles").append(articleCards); 
@@ -148,4 +147,4 @@ function saveArticle() {
       initPage();
     }
   });
-}
+};
